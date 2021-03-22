@@ -7,12 +7,18 @@ body{
     background-color: cadetblue;
 }
 .paralax-item{
-    background-color: black;
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     position: absolute;
     left: 50%;
     top: 50%;
     margin-left: -100px;
     margin-top: -100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.paralax-item img{
+    max-width: 100%;
+    max-height: 100%;
 }
