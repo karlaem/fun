@@ -33,15 +33,25 @@ var output = {
     },
     zIndex:{
         range:10000
+    },
+    scale:{
+        start: 1,
+        end: 0.2,
+    },
+    blur:{
+        startingDepth: 0.1,
+        range: 20,
     }
 }
 
 output.x.range = output.x.end - output.x.start;
 output.y.range = output.y.end - output.y.start;
+output.scale.range = output.scale.end - output.scale.start;
 
 var mouse = {
-    x:0,
-    y:0
+    // in the middle of the window
+    x:window.innerWidth * 0.5,
+    y:window.innerHeight * 0.5,
 }
 
 var updateOutputs = function() {
@@ -68,10 +78,13 @@ var  updateEachParalaxItem = function () {
         var itemOutput = {
             x: output.x.current - (output.x.current * depth),
             y: output.y.current - (output.y.current * depth),
-            zIndex: output.zIndex.range - (output.zIndex.range * depth)
+            zIndex: output.zIndex.range - (output.zIndex.range * depth),
+            scale: output.scale.start + (output.scale.range * depth),
+            blur: (depth - output.blur.startingDepth) * output.blur.range,
         };
+        item.style.filter = 'blur('+itemOutput.blur+'px)';
         item.style.zIndex = itemOutput.zIndex;
-        item.style.transform = 'translate('+itemOutput.x+'px, '+itemOutput.y+'px)';
+        item.style.transform = 'scale('+itemOutput.scale+') translate('+itemOutput.x+'px, '+itemOutput.y+'px)';
     });
 }
 
@@ -95,3 +108,8 @@ var handleResize = function (){
 
 window.addEventListener('mousemove', handleMouseMove)
 window.addEventListener('resize', handleResize)
+
+// at the start
+updateInputs();
+updateOutputs();
+updateEachParalaxItem();
